@@ -12,16 +12,28 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+interface Priority {
+  [key: string]: string;
+}
+
+interface CategoryPriority {
+  default: string;
+  priorities: Priority;
+}
+
 @Component({
   selector: 'app-assets-scan',
   standalone: true,
   imports: [
     CommonModule,
     HttpClientModule,
-    MatTableModule, MatTableModule,
-    MatSelectModule, MatButtonModule, MatFormFieldModule, MatInputModule,
+    MatTableModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     FormsModule,
-    MatPaginatorModule // Asegúrate de importar MatPaginatorModule
+    MatPaginatorModule
   ],
   templateUrl: './assets-scan.component.html',
   styleUrls: ['./assets-scan.component.sass'],
@@ -32,15 +44,15 @@ export class AssetsScanComponent implements OnInit {
   certificates: any[] = [];
   dnsRecords: any[] = [];
   analysisResults: any[] = [];
-  website: any[] = [] ;
+  website: any[] = [];
   mails: any[] = [];
   services: any[] = [];
 
   displayedColumnsCertificates: string[] = ['indice', 'nombre', 'descripcion', 'valido_desde', 'valido_hasta', 'emisor', 'sujeto', 'encriptacion', 'prioridad', 'valor'];
   displayedColumnsDnsRecords: string[] = ['indice', 'tipo', 'ttl', 'prioridad', 'valor'];
-  displayedColumnsMails: string[] = ['indice', 'email', 'name'];
-  displayedColumnsServices: string[] = ['indice', 'service'];
-  displayedColumnsWebsites: string[] = ['indice', 'type', 'url'];
+  displayedColumnsMails: string[] = ['indice', 'email', 'name', 'prioridad', 'valor'];
+  displayedColumnsServices: string[] = ['indice', 'service', 'prioridad', 'valor'];
+  displayedColumnsWebsites: string[] = ['indice', 'type', 'url', 'prioridad', 'valor'];
   displayedColumnsAnalysisResults: string[] = ['indice', 'engine', 'category', 'result', 'prioridad', 'valor'];
 
   certificatesPage: any[] = [];
@@ -64,6 +76,52 @@ export class AssetsScanComponent implements OnInit {
   mailsPageIndex = 0;
   servicesPageIndex = 0;
 
+  categoryPriorities: { [key: string]: CategoryPriority } = {
+    certificates: {
+      default: 'Media',
+      priorities: {}
+    },
+    dnsRecords: {
+      default: 'Baja',
+      priorities: {}
+    },
+    analysisResults: {
+      default: 'Baja',
+      priorities: {}
+    },
+    websites: {
+      default: 'Media',
+      priorities: {
+        twitter: 'Baja',
+        facebook: 'Baja',
+        linkedin: 'Alta',
+        instagram: 'Media',
+        youtube: 'Media'
+      }
+    },
+    mails: {
+      default: 'Media',
+      priorities: {}
+    },
+    services: {
+      default: 'Media',
+      priorities: {
+        apache: 'Alta',
+        facebook: 'Media',
+        'google-analytics': 'Media',
+        'google-tag-manager': 'Media',
+        hotjar: 'Media',
+        leaflet: 'Media',
+        mysql: 'Alta',
+        php: 'Alta',
+        react: 'Alta',
+        'w3-total-cache': 'Baja',
+        wordpress: 'Alta',
+        'yoast-seo': 'Media'
+      }
+    }
+  };
+
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
@@ -73,13 +131,19 @@ export class AssetsScanComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.domain = params.get('domain');
+    });
+    this.initialize()
+  }
+
+  initialize(){
+
 
       if (this.domain) {
         this.apiService.getVirusTotalInfo(this.domain).subscribe({
           next: (info) => {
-            this.certificates = this.sortByPriority(info.assets.certificates);
-            this.dnsRecords = this.sortByPriority(info.assets.dns_records);
-            this.analysisResults = this.sortByPriority(info.assets.analysis_results);
+            this.certificates = this.assignPriorities(info.assets.certificates, 'certificates');
+            this.dnsRecords = this.assignPriorities(info.assets.dns_records, 'dnsRecords');
+            this.analysisResults = this.assignPriorities(info.assets.analysis_results, 'analysisResults');
             this.updateCertificatesPage();
             this.updateDnsRecordsPage();
             this.updateAnalysisResultsPage();
@@ -91,18 +155,24 @@ export class AssetsScanComponent implements OnInit {
 
         this.apiService.getDomainInfo(this.domain).subscribe({
           next: (info) => {
-            console.log("🚀 ~ AssetsScanComponent ~ this.apiService.getDomainInfo ~ info:", info)
-            this.website = this.transformWebsiteData(info.websites);
-            this.mails = info.mails;
-            this.services = info.servicesAndPrograms;
-
+            this.website = this.assignPriorities(this.transformWebsiteData(info.websites), 'websites');
+            this.mails = this.assignPriorities(info.mails, 'mails');
+            this.services = this.assignPriorities(this.transformServicesData(info.servicesAndPrograms), 'services');
+            this.updateWebsitesPage();
+            this.updateMailsPage();
+            this.updateServicesPage();
           },
           error: (error) => {
             console.error('Error:', error);
           }
         });
       }
-    });
+
+
+  }
+
+  transformServicesData(services: any): any[] {
+    return services.map((service: any) => ({ service }));
   }
 
   transformWebsiteData(websites: any): any[] {
@@ -121,9 +191,13 @@ export class AssetsScanComponent implements OnInit {
     return result;
   }
 
-  sortByPriority(data: any[]): any[] {
-    const priorityMap: { [key: string]: number } = { 'Alta': 1, 'Media': 2, 'Baja': 3 };
-    return data.sort((a, b) => (priorityMap[a.prioridad] || 4) - (priorityMap[b.prioridad] || 4));
+  assignPriorities(data: any[], category: string): any[] {
+    const categoryPriority = this.categoryPriorities[category] || { default: 'Media', priorities: {} };
+    return data.map(item => {
+      const itemKey = item.type || item.service || item.email || item.name;
+      const priority = categoryPriority.priorities[itemKey] || categoryPriority.default;
+      return { ...item, prioridad: priority };
+    });
   }
 
   updateCertificatesPage() {
@@ -131,7 +205,6 @@ export class AssetsScanComponent implements OnInit {
     const endIndex = startIndex + this.certificatesPageSize;
     this.certificatesPage = this.certificates.slice(startIndex, endIndex).map((item, index) => ({ ...item, indice: startIndex + index + 1 }));
   }
-
 
   updateDnsRecordsPage() {
     const startIndex = this.dnsRecordsPageIndex * this.dnsRecordsPageSize;
@@ -162,7 +235,6 @@ export class AssetsScanComponent implements OnInit {
     const endIndex = startIndex + this.servicesPageSize;
     this.servicesPage = this.services.slice(startIndex, endIndex).map((item, index) => ({ ...item, indice: startIndex + index + 1 }));
   }
-
 
   onCertificatesPageChange(event: any) {
     this.certificatesPageIndex = event.pageIndex;
@@ -200,7 +272,6 @@ export class AssetsScanComponent implements OnInit {
     this.updateServicesPage();
   }
 
-
   exportCertificates() {
     this.exportService.exportAsExcelFile(this.certificates, 'certificates');
   }
@@ -218,10 +289,10 @@ export class AssetsScanComponent implements OnInit {
   }
 
   exportMails() {
-    this.exportService.exportAsExcelFile(this.mails,'mails');
-  }
-  exportServices() {
-    this.exportService.exportAsExcelFile(this.services,'services');
+    this.exportService.exportAsExcelFile(this.mails, 'mails');
   }
 
+  exportServices() {
+    this.exportService.exportAsExcelFile(this.services, 'services');
+  }
 }

@@ -3,12 +3,12 @@
     <mat-card class="card">
       <div class="overlay">
         <mat-card-content>
-          <h1>Enter Domain</h1>
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Domain</mat-label>
-            <input matInput placeholder="example.com" [(ngModel)]="domain">
+          <h1>Ingrese el dominio que quiere revisar</h1>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>El dominio</mat-label>
+            <input matInput placeholder="udla.edu.ec" [(ngModel)]="domain">
           </mat-form-field>
-          <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+          <button mat-flat-button color="primary" (click)="onSubmit()">Ingresar</button>
         </mat-card-content>
       </div>
     </mat-card>

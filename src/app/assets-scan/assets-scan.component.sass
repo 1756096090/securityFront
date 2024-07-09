@@ -1,68 +1,65 @@
 .demo-table-container
-  width: 100%
-  overflow-x: auto // Añadir scroll horizontal si el contenido es demasiado ancho
-
-.demo-table
-  width: 100%
+  overflow-x: auto
   margin-bottom: 20px
-  table-layout: fixed // Hace que todas las celdas de la tabla tengan el mismo ancho
 
-.mat-mdc-row, .mat-mdc-header-row
-  display: flex
-  width: 100%
+  .mat-table
+    width: 100%
+    .mat-header-cell, .mat-cell
+      min-width: 150px // Ajusta el valor según el ancho mínimo deseado
+      min-height: 50px // Ajusta el valor según el alto mínimo deseado
+      white-space: nowrap
+      display: flex
+      align-items: center // Para centrar verticalmente el contenido
 
-.mat-mdc-cell, .mat-mdc-header-cell
-  flex: 1
-  text-align: center
-  padding: 8px 16px // Ajusta el padding según sea necesario
+  .mat-header-cell
+    background-color: #007BFF
+    color: white
+    font-weight: bold
 
-.mat-mdc-row .mat-mdc-cell
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12)
-  border-top: 1px solid rgba(0, 0, 0, 0.12)
-  cursor: pointer
-  transition: background-color 0.3s, border-color 0.3s
+  .mat-cell
+    white-space: nowrap
 
-.mat-mdc-row:hover .mat-mdc-cell
-  border-color: rgba(0, 0, 0, 0.54)
-  background-color: rgba(0, 0, 0, 0.04)
-
-.demo-row-is-clicked
-  font-weight: bold
-  background-color: rgba(0, 0, 0, 0.08)
+.padding
+  padding: 10px
 
 .mat-form-field
   width: 100%
 
-mat-label
-  font-weight: bold
-
-input[matInput]
-  border-radius: 4px
-
-mat-select
-  width: 100%
-  .mat-select-trigger
-    font-weight: bold
-  .mat-select-arrow
-    color: rgba(0, 0, 0, 0.54)
-
 button.mat-raised-button
   margin: 10px 0
 
-.mat-header-cell, .mat-cell
-  padding: 8px 16px // Reduce el padding para que haya más espacio disponible para las celdas
-  flex: 1
-  text-align: center
+.mat-paginator
+  margin-top: 10px
 
-.padding
-  padding: 30px 30px
+input
+  height: 1.5rem
+  border-radius: 5px
+  border-color: gray
+  height: 100%
+
+.mat-header-cell
+  background-color: blue
+
+.mat-select-panel
+  background-color: white
+  color: black
+
+.mat-option
+  color: black
+
+.mat-input-element
+  color: black
 
 .mat-select
-  padding: 30px 30px
+  background-color: #f1f1f1
+  border-radius: 4px
+  padding: 0 10px
+  .mat-select-arrow
+    color: #007BFF
+  .mat-select-value
+    padding: 10px 0
 
-.prioridad
-  width: 30px
-
-table
-  width: 100%
-  table-layout: fixed // Hace que todas las celdas de la tabla tengan el mismo ancho
+.mat-input-element
+  background-color: #f1f1f1
+  border-radius: 4px
+  padding: 10px
