@@ -7,7 +7,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-enter-domain',
   standalone: true,
@@ -25,9 +24,11 @@ import { Router } from '@angular/router';
 export class EnterDomainComponent {
   domain: string = '';
 
-  constructor( private router: Router) { }
+  constructor(private router: Router) { }
 
   onSubmit() {
-    this.router.navigate(['/assets-scan'], { state: { domain: this.domain } });  // Navega con el estado
+    if (this.domain) {
+      this.router.navigate(['/assets-scan', this.domain]);
+    }
   }
 }

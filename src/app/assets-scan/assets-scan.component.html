@@ -3,7 +3,7 @@
   <input matInput placeholder="Ex. Pizza" [(ngModel)]="domain">
 </mat-form-field>
 
-<div *ngIf="certificatesPage.length">
+<div *ngIf="certificatesPage.length" class="demo-table-container">
   <h2>Certificados</h2>
   <button mat-raised-button color="primary" (click)="exportCertificates()">Exportar Certificados</button>
   <mat-table [dataSource]="certificatesPage" class="mat-elevation-z8 demo-table">
@@ -76,7 +76,7 @@
     (page)="onCertificatesPageChange($event)"></mat-paginator>
 </div>
 
-<div *ngIf="dnsRecordsPage.length">
+<div *ngIf="dnsRecordsPage.length" class="demo-table-container">
   <h2>Registros DNS</h2>
   <button mat-raised-button color="primary" (click)="exportDnsRecords()">Exportar Registros DNS</button>
   <mat-table [dataSource]="dnsRecordsPage" class="mat-elevation-z8 demo-table">
@@ -124,7 +124,7 @@
     (page)="onDnsRecordsPageChange($event)"></mat-paginator>
 </div>
 
-<div *ngIf="analysisResultsPage.length">
+<div *ngIf="analysisResultsPage.length" class="demo-table-container">
   <h2>Resultados del Análisis</h2>
   <button mat-raised-button color="primary" (click)="exportAnalysisResults()">Exportar Resultados del Análisis</button>
   <mat-table [dataSource]="analysisResultsPage" class="mat-elevation-z8 demo-table">
@@ -177,7 +177,8 @@
     (page)="onAnalysisResultsPageChange($event)"></mat-paginator>
 </div>
 
-<div *ngIf="mails.length">
+<div *ngIf="mails.length" class="demo-table-container">
+  <button mat-raised-button color="primary" (click)="exportAnalysisResults()">Exportar Resultados del Análisis</button>
   <h2>Correos Electrónicos</h2>
   <mat-table [dataSource]="mails" class="mat-elevation-z8 demo-table">
     <ng-container matColumnDef="indice">
@@ -203,8 +204,9 @@
     (page)="onAnalysisResultsPageChange($event)"></mat-paginator>
 </div>
 
-<div *ngIf="services.length">
+<div *ngIf="services.length" class="demo-table-container">
   <h2>Servicios y Programas</h2>
+  <button mat-raised-button color="primary" (click)="exportServices()">Exportar Resultados del Análisis</button>
   <mat-table [dataSource]="services" class="mat-elevation-z8 demo-table">
     <ng-container matColumnDef="indice">
       <th mat-header-cell *matHeaderCellDef> # </th>
@@ -224,8 +226,9 @@
     (page)="onAnalysisResultsPageChange($event)"></mat-paginator>
 </div>
 
-<div *ngIf="website">
+<div *ngIf="website" class="demo-table-container">
   <h2>Sitios Web</h2>
+  <button mat-raised-button color="primary" (click)="exportWebsites()">Exportar Resultados del Análisis</button>
   <mat-table [dataSource]="website" class="mat-elevation-z8 demo-table">
     <ng-container matColumnDef="indice">
       <th mat-header-cell *matHeaderCellDef> # </th>

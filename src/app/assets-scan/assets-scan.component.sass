@@ -1,6 +1,20 @@
+.demo-table-container
+  width: 100%
+  overflow-x: auto // Añadir scroll horizontal si el contenido es demasiado ancho
+
 .demo-table
   width: 100%
   margin-bottom: 20px
+  table-layout: fixed // Hace que todas las celdas de la tabla tengan el mismo ancho
+
+.mat-mdc-row, .mat-mdc-header-row
+  display: flex
+  width: 100%
+
+.mat-mdc-cell, .mat-mdc-header-cell
+  flex: 1
+  text-align: center
+  padding: 8px 16px // Ajusta el padding según sea necesario
 
 .mat-mdc-row .mat-mdc-cell
   border-bottom: 1px solid rgba(0, 0, 0, 0.12)
@@ -36,7 +50,7 @@ button.mat-raised-button
   margin: 10px 0
 
 .mat-header-cell, .mat-cell
-  padding: 30px 30px
+  padding: 8px 16px // Reduce el padding para que haya más espacio disponible para las celdas
   flex: 1
   text-align: center
 
@@ -48,3 +62,7 @@ button.mat-raised-button
 
 .prioridad
   width: 30px
+
+table
+  width: 100%
+  table-layout: fixed // Hace que todas las celdas de la tabla tengan el mismo ancho
