@@ -5,9 +5,6 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.sass'
+  template: '<router-outlet></router-outlet>'
 })
-export class AppComponent {
-  title = 'assets-scan';
-}
+export class AppComponent { }

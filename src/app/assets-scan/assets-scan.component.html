@@ -1,0 +1,251 @@
+<mat-form-field appearance="outline"  class="padding">
+  <mat-label>Escriba el Dominio</mat-label>
+  <input matInput placeholder="Ex. Pizza" [(ngModel)]="domain">
+</mat-form-field>
+
+<div *ngIf="certificatesPage.length">
+  <h2>Certificados</h2>
+  <button mat-raised-button color="primary" (click)="exportCertificates()">Exportar Certificados</button>
+  <mat-table [dataSource]="certificatesPage" class="mat-elevation-z8 demo-table">
+    <ng-container matColumnDef="indice">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element"> {{element.indice}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valido_desde">
+      <th mat-header-cell *matHeaderCellDef> Válido Desde </th>
+      <td mat-cell *matCellDef="let element"> {{element.valid_from}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valido_hasta">
+      <th mat-header-cell *matHeaderCellDef> Válido Hasta </th>
+      <td mat-cell *matCellDef="let element"> {{element.valid_to}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="emisor">
+      <th mat-header-cell *matHeaderCellDef> Emisor </th>
+      <td mat-cell *matCellDef="let element"> {{element.issuer}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sujeto">
+      <th mat-header-cell *matHeaderCellDef> Sujeto </th>
+      <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="encriptacion">
+      <th mat-header-cell *matHeaderCellDef> Encriptación </th>
+      <td mat-cell *matCellDef="let element"> {{element.encryption}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prioridad">
+      <th mat-header-cell *matHeaderCellDef> Prioridad </th>
+      <td mat-cell *matCellDef="let element">
+
+          <mat-select [(ngModel)]="element.prioridad" name="prioridad" class="prioridad" >
+            <mat-option value="Alta">Alta</mat-option>
+            <mat-option value="Media">Media</mat-option>
+            <mat-option value="Baja">Baja</mat-option>
+          </mat-select>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valor">
+      <th mat-header-cell *matHeaderCellDef> Valor </th>
+      <td mat-cell *matCellDef="let element">
+
+          <input matInput type="number" [(ngModel)]="element.valor" name="valor">
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsCertificates"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsCertificates;"></tr>
+  </mat-table>
+  <mat-paginator [length]="certificates.length" [pageSize]="certificatesPageSize" [pageSizeOptions]="[5, 10, 20]"
+    (page)="onCertificatesPageChange($event)"></mat-paginator>
+</div>
+
+<div *ngIf="dnsRecordsPage.length">
+  <h2>Registros DNS</h2>
+  <button mat-raised-button color="primary" (click)="exportDnsRecords()">Exportar Registros DNS</button>
+  <mat-table [dataSource]="dnsRecordsPage" class="mat-elevation-z8 demo-table">
+    <ng-container matColumnDef="indice">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element"> {{element.indice}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tipo">
+      <th mat-header-cell *matHeaderCellDef> Tipo </th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ttl">
+      <th mat-header-cell *matHeaderCellDef> TTL </th>
+      <td mat-cell *matCellDef="let element"> {{element.ttl}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prioridad">
+      <th mat-header-cell *matHeaderCellDef> Prioridad </th>
+      <td mat-cell *matCellDef="let element">
+
+          <mat-select [(ngModel)]="element.prioridad" name="prioridad" class="prioridad">
+            <mat-option value="Alta">Alta</mat-option>
+            <mat-option value="Media">Media</mat-option>
+            <mat-option value="Baja">Baja</mat-option>
+          </mat-select>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valor">
+      <th mat-header-cell *matHeaderCellDef> Valor </th>
+      <td mat-cell *matCellDef="let element">
+
+          <input matInput type="number" [(ngModel)]="element.valor" name="valor">
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsDnsRecords"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsDnsRecords;"></tr>
+  </mat-table>
+  <mat-paginator [length]="dnsRecords.length" [pageSize]="dnsRecordsPageSize" [pageSizeOptions]="[5, 10, 20]"
+    (page)="onDnsRecordsPageChange($event)"></mat-paginator>
+</div>
+
+<div *ngIf="analysisResultsPage.length">
+  <h2>Resultados del Análisis</h2>
+  <button mat-raised-button color="primary" (click)="exportAnalysisResults()">Exportar Resultados del Análisis</button>
+  <mat-table [dataSource]="analysisResultsPage" class="mat-elevation-z8 demo-table">
+    <ng-container matColumnDef="indice">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element"> {{element.indice}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="engine">
+      <th mat-header-cell *matHeaderCellDef> Motor </th>
+      <td mat-cell *matCellDef="let element"> {{element.engine}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef> Categoría </th>
+      <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="result">
+      <th mat-header-cell *matHeaderCellDef> Resultado </th>
+      <td mat-cell *matCellDef="let element"> {{element.result}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prioridad">
+      <th mat-header-cell *matHeaderCellDef> Prioridad </th>
+      <td mat-cell *matCellDef="let element">
+
+          <mat-select [(ngModel)]="element.prioridad" name="prioridad" class="prioridad">
+            <mat-option value="Alta">Alta</mat-option>
+            <mat-option value="Media">Media</mat-option>
+            <mat-option value="Baja">Baja</mat-option>
+          </mat-select>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valor">
+      <th mat-header-cell *matHeaderCellDef> Valor </th>
+      <td mat-cell *matCellDef="let element">
+
+          <input matInput type="number" [(ngModel)]="element.valor" name="valor">
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsAnalysisResults"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsAnalysisResults;"></tr>
+  </mat-table>
+  <mat-paginator [length]="analysisResults.length" [pageSize]="analysisResultsPageSize" [pageSizeOptions]="[5, 10, 20]"
+    (page)="onAnalysisResultsPageChange($event)"></mat-paginator>
+</div>
+
+<div *ngIf="mails.length">
+  <h2>Correos Electrónicos</h2>
+  <mat-table [dataSource]="mails" class="mat-elevation-z8 demo-table">
+    <ng-container matColumnDef="indice">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsMails"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsMails;"></tr>
+  </mat-table>
+
+  <mat-paginator [length]="mails.length" [pageSize]="mailsPageSize" [pageSizeOptions]="[5, 10, 20]"
+    (page)="onAnalysisResultsPageChange($event)"></mat-paginator>
+</div>
+
+<div *ngIf="services.length">
+  <h2>Servicios y Programas</h2>
+  <mat-table [dataSource]="services" class="mat-elevation-z8 demo-table">
+    <ng-container matColumnDef="indice">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="service">
+      <th mat-header-cell *matHeaderCellDef> Servicio/Programa </th>
+      <td mat-cell *matCellDef="let element"> {{element}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsServices"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsServices;"></tr>
+  </mat-table>
+
+  <mat-paginator [length]="services.length" [pageSize]="servicesPageSize" [pageSizeOptions]="[5, 10, 20]"
+    (page)="onAnalysisResultsPageChange($event)"></mat-paginator>
+</div>
+
+<div *ngIf="website">
+  <h2>Sitios Web</h2>
+  <mat-table [dataSource]="website" class="mat-elevation-z8 demo-table">
+    <ng-container matColumnDef="indice">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Tipo </th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="url">
+      <th mat-header-cell *matHeaderCellDef> URL </th>
+      <td mat-cell *matCellDef="let element"> <a href="{{element.url}}" target="_blank">{{element.url}}</a> </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsWebsites"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsWebsites;"></tr>
+  </mat-table>
+  <mat-paginator [length]="mails.length" [pageSize]="mailsPageSize" [pageSizeOptions]="[5, 10, 20]"
+    (page)="onAnalysisResultsPageChange($event)"></mat-paginator>
+</div>
+

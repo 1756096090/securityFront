@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="background-image">
+    <mat-card class="card">
+      <div class="overlay">
+        <mat-card-content>
+          <h1>Enter Domain</h1>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Domain</mat-label>
+            <input matInput placeholder="example.com" [(ngModel)]="domain">
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </div>
+</div>
