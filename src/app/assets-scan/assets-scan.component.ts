@@ -273,26 +273,26 @@ export class AssetsScanComponent implements OnInit {
   }
 
   exportCertificates() {
-    this.exportService.exportAsExcelFile(this.certificates, 'certificates');
+    this.exportService.exportAsExcelFile(this.certificatesPage, 'certificates');
   }
 
   exportDnsRecords() {
-    this.exportService.exportAsExcelFile(this.dnsRecords, 'dns_records');
+    this.exportService.exportAsExcelFile(this.dnsRecordsPage, 'dns_records');
   }
 
   exportAnalysisResults() {
-    this.exportService.exportAsExcelFile(this.analysisResults, 'analysis_results');
+    this.exportService.exportAsExcelFile(this.analysisResultsPage, 'analysis_results');
   }
 
   exportWebsites() {
-    this.exportService.exportAsExcelFile(this.website, 'websites');
+    this.exportService.exportAsExcelFile(this.websitesPage, 'websites');
   }
 
   exportMails() {
-    this.exportService.exportAsExcelFile(this.mails, 'mails');
+    this.exportService.exportAsExcelFile(this.mailsPage, 'mails');
   }
 
   exportServices() {
-    this.exportService.exportAsExcelFile(this.services, 'services');
+    this.exportService.exportAsExcelFile(this.servicesPage, 'services');
   }
 }

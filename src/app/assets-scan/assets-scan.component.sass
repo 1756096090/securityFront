@@ -1,23 +1,26 @@
 .demo-table-container
   overflow-x: auto
   margin-bottom: 20px
-
   .mat-table
     width: 100%
-    .mat-header-cell, .mat-cell
-      min-width: 150px // Ajusta el valor según el ancho mínimo deseado
-      min-height: 50px // Ajusta el valor según el alto mínimo deseado
-      white-space: nowrap
-      display: flex
-      align-items: center // Para centrar verticalmente el contenido
+    table-layout: fixed // Asegura que las columnas tomen todo el espacio disponible de manera uniforme
 
-  .mat-header-cell
+  th.mat-header-cell
     background-color: #007BFF
     color: white
     font-weight: bold
+    text-align: center // Para centrar horizontalmente el contenido
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12)
+    padding: 0 16px
+    box-sizing: border-box // Asegura que el padding se incluya en el tamaño total de la celda
 
-  .mat-cell
+  td.mat-cell
+    min-width: 150px // Ajusta el valor según el ancho mínimo deseado
     white-space: nowrap
+    text-align: center // Para centrar horizontalmente el contenido
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12)
+    padding: 0 16px
+    box-sizing: border-box // Asegura que el padding se incluya en el tamaño total de la celda
 
 .padding
   padding: 10px
@@ -37,9 +40,6 @@ input
   border-color: gray
   height: 100%
 
-.mat-header-cell
-  background-color: blue
-
 .mat-select-panel
   background-color: white
   color: black
@@ -51,6 +51,7 @@ input
   color: black
 
 .mat-select
+  min-width: 140px
   background-color: #f1f1f1
   border-radius: 4px
   padding: 0 10px
@@ -60,6 +61,15 @@ input
     padding: 10px 0
 
 .mat-input-element
-  background-color: #f1f1f1
+  background-color: #6f6f6f
   border-radius: 4px
   padding: 10px
+
+
+button
+  padding: 10px
+  margin: 10px
+
+
+th, td
+  table-layout: fixed
